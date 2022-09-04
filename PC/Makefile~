@@ -1,0 +1,27 @@
+#GC= gcc
+
+#all:	synthetizer
+
+#common objects
+#%.o : %.c
+#	$(GC)   -o $@ $< -lasound 
+
+CC = gcc
+CFLAGS = -Wall -g 
+SRCS =  prova_t.c
+HEADERS = $(SRCS:.c=.h)
+MAIN =  prova_t
+
+all:    $(MAIN); chmod u+x $(MAIN)
+
+
+$(MAIN): $(MAIN).c
+	$(CC) $(CFLAGS) -o $(MAIN) $(MAIN).c  -lasound libportaudio.a -lrt -lm -lasound -pthread
+
+
+
+clean:
+	$(RM) *.o $(MAIN)
+
+
+
