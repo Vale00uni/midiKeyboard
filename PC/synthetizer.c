@@ -45,7 +45,6 @@ void audio_function_thread(void *arg){
 
     while(1){
         if(note_active[16] == 1){
-            printf("[Audio thread] End activity...\n");
             break;
         }
         if (playback_callback(BUFSIZE) < BUFSIZE) {
@@ -53,7 +52,11 @@ void audio_function_thread(void *arg){
             snd_pcm_prepare(args -> playback_handle);
         }
     }
-    pthread_exit(1);
+    
+    free(buffer);
+    snd_pcm_close (playback_handle);
+    printf("[Audio thread] End activity...\n");
+    pthread_exit(NULL);
 
 }
 
@@ -98,7 +101,6 @@ void serial_function_thread(void *arg){
         //check quit button
         if(key == 16){
             note_active[key] = 1;
-            printf("[Serial thread] End activity...\n");
             break;
         }
 
@@ -118,7 +120,8 @@ void serial_function_thread(void *arg){
     }
 
     close(args -> keyboard_fd);
-    return NULL;
+    printf("[Serial thread] End activity...\n");
+    pthread_exit(NULL);
 }
 
 
@@ -310,16 +313,19 @@ int main (int argc, char *argv[]) {
 
 
 
-    pthread_join(&serial_thread, NULL);
-    pthread_join(&audio_thread, NULL);
+    pthread_join(serial_thread, NULL);
+    pthread_join(audio_thread, NULL);
+
+
+
+    pthread_detach(serial_thread);
+    pthread_detach(audio_thread);
 
 
 
 
 
     printf("[MAIN] End process ..\n");
-    free(buffer);
-    snd_pcm_close (playback_handle);
-    close(keyboard_fd);
+    
     return (0);
 }
