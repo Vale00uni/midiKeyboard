@@ -80,7 +80,7 @@ void serial_function_thread(void *arg){
         if(!ok) continue;
         printf("[Serial thread] Ho letto: %s  <------> nbyte: %d\n", buffer_read,strlen(buffer_read));
 
-        //**************SENZA SEQUENCER**********************************//
+        
 
         //is on?
         short on;
@@ -99,10 +99,14 @@ void serial_function_thread(void *arg){
 
 
         //check quit button
-        if(key == 16){
+        if(key == 16 && on == 1){
             note_active[key] = 1;
             break;
         }
+
+	if(key == 16 && on == 1){
+		continue;
+	}
 
         //Note on-off
         if(on){
@@ -316,7 +320,7 @@ int main (int argc, char *argv[]) {
     pthread_join(serial_thread, NULL);
     pthread_join(audio_thread, NULL);
 
-    printf("Finiti entrambi\n");
+
 
     pthread_detach(serial_thread);
     pthread_detach(audio_thread);

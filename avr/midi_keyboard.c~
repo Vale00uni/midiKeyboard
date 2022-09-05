@@ -47,7 +47,7 @@ uint8_t keyScan(KeyEvent* events){
 
       // if key pressed toggle to 1
       // the corresoinding bit
-      // of the new keymap (new_status is the mask of the current status)
+      // of the new keymap (key_mask is the mask of the current status)
       if (cs){
         new_status |= key_mask;
       }
