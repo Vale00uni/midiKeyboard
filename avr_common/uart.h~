@@ -1,4 +1,0 @@
-#pragma once
-#include "stdio.h"
-
-void printf_init(void);
